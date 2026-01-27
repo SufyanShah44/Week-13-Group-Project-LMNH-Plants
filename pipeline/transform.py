@@ -5,12 +5,11 @@ import argparse
 import ast
 import re
 from pathlib import Path
-from typing import Optional, Tuple
 
 import pandas as pd
 
 
-def parse_scientific_name(value: object) -> Optional[str]:
+def parse_scientific_name(value: str | list[str]) -> str:
     """Parses scientific name if there is one"""
     if value is None or (isinstance(value, float) and pd.isna(value)):
         return None
@@ -33,7 +32,7 @@ def parse_scientific_name(value: object) -> Optional[str]:
 PHONE_EXT_RE = re.compile(r"(?:ext\.?|x)\s*(\d+)\s*$", re.IGNORECASE)
 
 
-def normalise_phone(value: object) -> Tuple[Optional[str], Optional[str]]:
+def normalise_phone(value: str) -> tuple[str, str]:
     """Normalises phone numbers in different formats"""
     if value is None or (isinstance(value, float) and pd.isna(value)):
         return None, None
@@ -61,6 +60,7 @@ def normalise_phone(value: object) -> Tuple[Optional[str], Optional[str]]:
 
 
 def main() -> None:
+    """Main execution block"""
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", "-i", type=Path, required=True)
     parser.add_argument("--output", "-o", type=Path, required=True)

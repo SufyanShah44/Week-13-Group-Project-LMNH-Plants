@@ -4,3 +4,5 @@ pylint
 pytest
 flask
 requests
+python-dotenv
+pyodbc

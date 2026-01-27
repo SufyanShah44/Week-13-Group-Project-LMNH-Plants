@@ -2,5 +2,5 @@ requests
 pandas
 pylint
 pytest
-flask
-requests
+aiohttp
+asyncio

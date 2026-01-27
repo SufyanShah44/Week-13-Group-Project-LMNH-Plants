@@ -1,47 +1,49 @@
 plant_id,plant_name,scientific_name,botanist_name,botanist_email,botanist_phone,botanist_phone_ext,city,country_name,latitude,longitude,last_watered_ts,recording_taken_ts,soil_moisture,temperature
-1,Venus flytrap,,Sherry Campbell,sherry.campbell@lnhm.co.uk,+16626598097,8928,Mitchellfurt,Suriname,81.2003535,7.815683,2026-01-26T13:12:19,2026-01-27T11:03:39,24.92,17.16
-2,Corpse flower,,Jacob Hernandez,jacob.hernandez@lnhm.co.uk,8268602780,,Lake Jill,United States Minor Outlying Islands,62.501933,-20.640567,2026-01-26T13:51:43,2026-01-27T11:03:40,26.05,14.54
-3,Rafflesia arnoldii,,Elizabeth Crawford,elizabeth.crawford@lnhm.co.uk,+12225097760,0558,Edwardsstad,New Zealand,-73.9289085,-106.786584,2026-01-26T14:52:32,2026-01-27T11:03:41,30.99,14.45
-4,Black bat flower,,Alan Grant,alan.grant@lnhm.co.uk,6152878920,,East Sherry,Latvia,23.701525,106.401108,2026-01-26T13:35:15,2026-01-27T11:03:42,28.22,17.12
-5,Pitcher plant,Sarracenia catesbaei,Jennifer Blanchard,jennifer.blanchard@lnhm.co.uk,3277322111,,Lake Lydiaburgh,Pitcairn Islands,17.7169705,-17.8297,2026-01-26T14:11:02,2026-01-27T11:03:43,27.45,17.63
-6,Wollemi pine,Wollemia nobilis,Robert Walton,robert.walton@lnhm.co.uk,6786335125,,South Thomas,Estonia,-65.203977,-124.152631,2026-01-26T14:48:48,2026-01-27T11:03:44,31.36,13.2
-9,Cactus,Pereskia grandifolia,Virginia Phillips,virginia.phillips@lnhm.co.uk,8273002266,,Gambleshire,Nauru,-42.9962205,-123.053507,2026-01-26T14:38:15,2026-01-27T11:03:46,26.62,16.06
-10,Dragon tree,,Melinda Spencer,melinda.spencer@lnhm.co.uk,2422575669,3173,Stevensberg,Hungary,-82.3459075,-13.080896,2026-01-26T13:13:02,2026-01-27T11:03:47,24.16,18.52
-11,Asclepias Curassavica,Asclepias curassavica,James Brooks,james.brooks@lnhm.co.uk,+17457186720,493,Flowersberg,United Kingdom,-72.9649155,127.183588,2026-01-26T13:10:18,2026-01-27T11:03:49,23.48,17.3
-12,Brugmansia X Candida,,Anthony Oconnell,anthony.oconnell@lnhm.co.uk,9937827225,,Gomezmouth,Belgium,-40.5645435,83.998008,2026-01-26T13:22:31,2026-01-27T11:03:50,28.63,15.98
-13,Canna ‘Striata’,,Deborah Obrien,deborah.obrien@lnhm.co.uk,3218187487,25137,Millerton,Cyprus,-32.9029575,-146.302804,2026-01-26T14:34:26,2026-01-27T11:03:50,32.88,15.21
-14,Colocasia Esculenta,Colocasia esculenta,Joshua Jones,joshua.jones@lnhm.co.uk,+17366930793,86426,Watsontown,Nicaragua,-18.6871435,57.450992,2026-01-26T13:27:19,2026-01-27T11:03:51,23.51,16.86
-15,Cuphea ‘David Verity’,,Alexis Kaufman,alexis.kaufman@lnhm.co.uk,3567168148,0222,Leeville,Cayman Islands,-62.5511245,-161.813034,2026-01-26T13:33:54,2026-01-27T11:03:52,25.58,13.86
-16,Euphorbia Cotinifolia,Euphorbia cotinifolia,Rebekah King,rebekah.king@lnhm.co.uk,6383727752,12887,West Melanie,Niue,64.383879,92.902187,2026-01-26T13:16:30,2026-01-27T11:03:53,,16.17
-17,Ipomoea Batatas,Ipomoea batatas,James Underwood,james.underwood@lnhm.co.uk,+14635298946,478,Leebury,Swaziland,2.146164,56.967894,2026-01-26T14:18:32,2026-01-27T11:03:55,31.88,14.96
-18,Manihot Esculenta ‘Variegata’,,Daniel Coffey,daniel.coffey@lnhm.co.uk,5922020840,,Lake Tyler,Israel,-39.502295,-0.109342,2026-01-26T14:37:10,2026-01-27T11:03:56,32.03,16.54
-19,Musa Basjoo,Musa basjoo,John Rodriguez,john.rodriguez@lnhm.co.uk,3824200455,075,Gonzalezhaven,Congo,-67.269697,102.225776,2026-01-26T14:49:17,2026-01-27T11:03:56,28.48,15.73
-20,Salvia Splendens,Salvia splendens,Jeffrey Sanchez,jeffrey.sanchez@lnhm.co.uk,4225817412,,New Yolanda,Morocco,-23.4958555,-16.242039,2026-01-26T14:30:11,2026-01-27T11:03:57,29.36,16.53
-21,Anthurium,Anthurium andraeanum,Angela Myers,angela.myers@lnhm.co.uk,3838163814,,West Kevinburgh,Macao,-69.5795405,-54.074219,2026-01-26T14:50:20,2026-01-27T11:03:57,27.47,15.46
-22,Bird of Paradise,Heliconia schiedeana 'Fire and Ice',Andrew Gentry,andrew.gentry@lnhm.co.uk,+18659538002,162,East Rebecca,Angola,-34.9328045,150.371647,2026-01-26T14:35:24,2026-01-27T11:03:58,28.78,15.43
-23,Cordyline Fruticosa,Cordyline fruticosa,Clarence Frazier,clarence.frazier@lnhm.co.uk,2072007842,16626,Mortonborough,Luxembourg,-31.6079135,-83.850347,2026-01-26T14:33:50,2026-01-27T11:04:00,31.02,13.27
-24,Ficus,Ficus carica,Laura Curtis,laura.curtis@lnhm.co.uk,3829793257,31313,Lake Alexandraside,Chile,41.085675,-4.167175,2026-01-26T14:01:56,2026-01-27T11:04:00,25.98,13.3
-25,Palm Trees,,Larry Coleman,larry.coleman@lnhm.co.uk,7993597652,4467,Farmerberg,Isle of Man,76.6820215,164.980551,2026-01-26T13:36:09,2026-01-27T11:04:01,22.96,17.59
-26,Dieffenbachia Seguine,Dieffenbachia seguine,Sarah Hammond,sarah.hammond@lnhm.co.uk,2144952482,,Schmidtmouth,Guinea-Bissau,-29.066297,18.278546,2026-01-26T14:32:38,2026-01-27T11:04:02,26.26,14.24
-27,Spathiphyllum,Spathiphyllum (group),Paul Wells,paul.wells@lnhm.co.uk,3637976625,,Ruizmouth,Niger,21.876417,-31.458582,2026-01-26T13:28:17,2026-01-27T11:04:03,26.93,17.03
-28,Croton,Codiaeum variegatum,Katherine Hunt,katherine.hunt@lnhm.co.uk,+12638788630,362,Mallorymouth,Cocos (Keeling) Islands,9.707351,72.816634,2026-01-26T13:18:38,2026-01-27T11:04:04,27.54,15.44
-29,Aloe Vera,Aloe vera,Melissa Walker,melissa.walker@lnhm.co.uk,7625191584,,West Jacobfort,Djibouti,36.0357895,148.718821,2026-01-26T14:03:58,2026-01-27T11:04:05,25.44,13.09
-30,Ficus Elastica,Ficus elastica,Kathleen Alvarado,kathleen.alvarado@lnhm.co.uk,8556097979,,Lake Nicolefort,Greece,47.3941165,-24.434894,2026-01-26T13:00:43,2026-01-27T11:04:06,27.75,15.32
-31,Sansevieria Trifasciata,Sansevieria trifasciata,Tara Shannon,tara.shannon@lnhm.co.uk,+12122760013,63686,South Haley,China,-54.5020945,-127.026269,2026-01-26T14:44:18,2026-01-27T11:04:06,28.67,15.75
-32,Philodendron Hederaceum,Philodendron hederaceum,Jessica Benson,jessica.benson@lnhm.co.uk,9874358129,,Joanmouth,Armenia,-35.3487675,-80.319921,2026-01-26T14:35:13,2026-01-27T11:04:08,30.44,16.33
-33,Schefflera Arboricola,Schefflera arboricola,Adam Norman,adam.norman@lnhm.co.uk,+17698260298,,New Thomastown,Ethiopia,23.490859,-19.275947,2026-01-26T13:06:43,2026-01-27T11:04:09,23.18,15.27
-34,Aglaonema Commutatum,Aglaonema commutatum,James Eaton,james.eaton@lnhm.co.uk,+19924473474,,Michaelborough,Bouvet Island (Bouvetoya),-23.513493,91.272237,2026-01-26T13:00:30,2026-01-27T11:04:09,27.4,16.4
-36,Tacca Integrifolia,Tacca integrifolia,Jacob Santos,jacob.santos@lnhm.co.uk,4623672126,,Port Jason,Singapore,50.7844445,177.490752,2026-01-26T13:26:21,2026-01-27T11:04:10,29.02,16.79
-37,Psychopsis Papilio,,Regina Payne,regina.payne@lnhm.co.uk,4002465288,36436,New Diana,French Guiana,15.4607085,-46.580627,2026-01-26T14:12:50,2026-01-27T11:04:11,24.92,13.59
-38,Saintpaulia Ionantha,Saintpaulia ionantha,Andrea Cook,andrea.cook@lnhm.co.uk,9316214485,063,Schmidtfurt,Cook Islands,-24.459428,-132.113354,2026-01-26T13:30:46,2026-01-27T11:04:12,27.61,14.61
-39,Gaillardia,Gaillardia aestivalis,Jimmy Rhodes,jimmy.rhodes@lnhm.co.uk,+14773477068,,South Erik,Malta,39.852798,-22.673609,2026-01-26T14:01:48,2026-01-27T11:04:14,30.89,13.96
-40,Amaryllis,Hippeastrum (group),Briana Deleon,briana.deleon@lnhm.co.uk,6054682269,187,Greentown,Gibraltar,-19.2927425,-101.687203,2026-01-26T14:28:30,2026-01-27T11:04:14,32.23,15.04
-41,Caladium Bicolor,Caladium bicolor,Charles Hall,charles.hall@lnhm.co.uk,7126105026,,Lake Christopherberg,Montenegro,24.7269645,-7.878364,2026-01-26T14:08:54,2026-01-27T11:04:14,25.43,13.31
-42,Chlorophytum Comosum,Chlorophytum comosum 'Vittatum',Dan Skinner,dan.skinner@lnhm.co.uk,3618109443,,Davidfurt,Russian Federation,-79.460413,77.002058,2026-01-26T14:55:42,2026-01-27T11:04:15,33.29,13.58
-44,Araucaria Heterophylla,Araucaria heterophylla,Ariel English,ariel.english@lnhm.co.uk,5496389648,56913,Davidshire,Niue,55.3241195,145.548092,2026-01-26T13:55:27,2026-01-27T11:04:17,24.17,15.76
-45,Begonia,Begonia 'Art Hodes',Amber Ross,amber.ross@lnhm.co.uk,7684103898,704,Davidchester,Iran,-60.5574125,-66.633609,2026-01-26T13:12:19,2026-01-27T11:04:18,21.75,17.16
-46,Medinilla Magnifica,Medinilla magnifica,Casey Hayden,casey.hayden@lnhm.co.uk,+13185200734,47289,New Lori,Malta,52.915803,-138.082562,2026-01-26T13:56:30,2026-01-27T11:04:19,26.79,15.53
-47,Calliandra Haematocephala,Calliandra haematocephala,Amy Yu,amy.yu@lnhm.co.uk,6064779194,,South Michael,Wallis and Futuna,28.2752,-60.488715,2026-01-26T14:07:26,2026-01-27T11:04:19,,15.68
-48,Zamioculcas Zamiifolia,Zamioculcas zamiifolia,Donna Baxter,donna.baxter@lnhm.co.uk,8994152737,4627,New Laurafurt,Russian Federation,73.4670145,85.12503,2026-01-26T13:46:01,2026-01-27T11:04:20,25.75,18.07
-49,Crassula Ovata,Crassula ovata,Crystal Goodman,crystal.goodman@lnhm.co.uk,5852643806,2321,Amandahaven,Saint Helena,54.8268295,-101.575928,2026-01-26T13:55:52,2026-01-27T11:04:21,28.0,13.73
-50,Epipremnum Aureum,Epipremnum aureum,Gina Meyer,gina.meyer@lnhm.co.uk,+14146160457,430,North Joshuatown,Montenegro,-73.7987385,-22.615264,2026-01-26T14:52:24,2026-01-27T11:04:21,32.04,15.11
+1,Venus flytrap,,Sherry Campbell,sherry.campbell@lnhm.co.uk,+16626598097,8928,Mitchellfurt,Suriname,81.2003535,7.815683,2026-01-27T13:12:19,2026-01-27T14:23:19,95.88,16.84
+2,Corpse flower,,Jacob Hernandez,jacob.hernandez@lnhm.co.uk,8268602780,,Lake Jill,United States Minor Outlying Islands,62.501933,-20.640567,2026-01-27T13:51:43,2026-01-27T14:23:21,98.23,14.29
+3,Rafflesia arnoldii,,Elizabeth Crawford,elizabeth.crawford@lnhm.co.uk,+12225097760,0558,Edwardsstad,New Zealand,-73.9289085,-106.786584,2026-01-26T14:52:32,2026-01-27T14:23:19,16.77,14.32
+4,Black bat flower,,Alan Grant,alan.grant@lnhm.co.uk,6152878920,,East Sherry,Latvia,23.701525,106.401108,2026-01-27T13:35:15,2026-01-27T14:23:21,97.15,16.84
+5,Pitcher plant,Sarracenia catesbaei,Jennifer Blanchard,jennifer.blanchard@lnhm.co.uk,3277322111,,Lake Lydiaburgh,Pitcairn Islands,17.7169705,-17.8297,2026-01-27T14:11:02,2026-01-27T14:23:20,99.31,17.42
+6,Wollemi pine,Wollemia nobilis,Robert Walton,robert.walton@lnhm.co.uk,6786335125,,South Thomas,Estonia,-65.203977,-124.152631,2026-01-26T14:48:48,2026-01-27T14:23:20,19.25,13.06
+8,Bird of paradise,Heliconia schiedeana 'Fire and Ice',Anna Davis,anna.davis@lnhm.co.uk,6015618163,5240,South Tina,United Arab Emirates,-60.9363685,-152.763324,2026-01-26T14:47:07,2026-01-27T14:23:18,22.04,16.53
+9,Cactus,Pereskia grandifolia,Virginia Phillips,virginia.phillips@lnhm.co.uk,8273002266,,Gambleshire,Nauru,-42.9962205,-123.053507,2026-01-26T14:38:15,2026-01-27T14:23:19,18.1,15.91
+10,Dragon tree,,Melinda Spencer,melinda.spencer@lnhm.co.uk,2422575669,3173,Stevensberg,Hungary,-82.3459075,-13.080896,2026-01-27T13:13:02,2026-01-27T14:23:21,95.86,18.2
+11,Asclepias Curassavica,Asclepias curassavica,James Brooks,james.brooks@lnhm.co.uk,+17457186720,493,Flowersberg,United Kingdom,-72.9649155,127.183588,2026-01-27T13:10:18,2026-01-27T14:23:22,95.92,16.98
+12,Brugmansia X Candida,,Anthony Oconnell,anthony.oconnell@lnhm.co.uk,9937827225,,Gomezmouth,Belgium,-40.5645435,83.998008,2026-01-27T13:22:31,2026-01-27T14:23:22,96.59,15.68
+13,Canna ‘Striata’,,Deborah Obrien,deborah.obrien@lnhm.co.uk,3218187487,25137,Millerton,Cyprus,-32.9029575,-146.302804,2026-01-26T14:34:26,2026-01-27T14:23:23,16.68,15.05
+14,Colocasia Esculenta,Colocasia esculenta,Joshua Jones,joshua.jones@lnhm.co.uk,+17366930793,86426,Watsontown,Nicaragua,-18.6871435,57.450992,2026-01-27T13:27:19,2026-01-27T14:23:22,96.79,16.57
+15,Cuphea ‘David Verity’,,Alexis Kaufman,alexis.kaufman@lnhm.co.uk,3567168148,0222,Leeville,Cayman Islands,-62.5511245,-161.813034,2026-01-27T13:33:54,2026-01-27T14:23:22,97.09,13.58
+16,Euphorbia Cotinifolia,Euphorbia cotinifolia,Rebekah King,rebekah.king@lnhm.co.uk,6383727752,12887,West Melanie,Niue,64.383879,92.902187,2026-01-27T13:16:30,2026-01-27T14:23:23,94.27,15.85
+17,Ipomoea Batatas,Ipomoea batatas,James Underwood,james.underwood@lnhm.co.uk,+14635298946,478,Leebury,Swaziland,2.146164,56.967894,2026-01-27T14:18:32,2026-01-27T14:23:25,99.71,14.77
+18,Manihot Esculenta ‘Variegata’,,Daniel Coffey,daniel.coffey@lnhm.co.uk,5922020840,,Lake Tyler,Israel,-39.502295,-0.109342,2026-01-26T14:37:10,2026-01-27T14:23:24,18.5,16.38
+19,Musa Basjoo,Musa basjoo,John Rodriguez,john.rodriguez@lnhm.co.uk,3824200455,075,Gonzalezhaven,Congo,-67.269697,102.225776,2026-01-26T14:49:17,2026-01-27T14:23:25,19.11,15.59
+20,Salvia Splendens,Salvia splendens,Jeffrey Sanchez,jeffrey.sanchez@lnhm.co.uk,4225817412,,New Yolanda,Morocco,-23.4958555,-16.242039,2026-01-26T14:30:11,2026-01-27T14:23:25,17.15,23.4
+21,Anthurium,Anthurium andraeanum,Angela Myers,angela.myers@lnhm.co.uk,3838163814,,West Kevinburgh,Macao,-69.5795405,-54.074219,2026-01-26T14:50:20,2026-01-27T14:23:27,18.63,15.33
+22,Bird of Paradise,Heliconia schiedeana 'Fire and Ice',Andrew Gentry,andrew.gentry@lnhm.co.uk,+18659538002,162,East Rebecca,Angola,-34.9328045,150.371647,2026-01-26T14:35:24,2026-01-27T14:23:27,15.25,15.27
+23,Cordyline Fruticosa,Cordyline fruticosa,Clarence Frazier,clarence.frazier@lnhm.co.uk,2072007842,16626,Mortonborough,Luxembourg,-31.6079135,-83.850347,2026-01-26T14:33:50,2026-01-27T14:23:28,20.8,13.11
+24,Ficus,Ficus carica,Laura Curtis,laura.curtis@lnhm.co.uk,3829793257,31313,Lake Alexandraside,Chile,41.085675,-4.167175,2026-01-27T14:01:56,2026-01-27T14:23:28,98.76,13.07
+25,Palm Trees,,Larry Coleman,larry.coleman@lnhm.co.uk,7993597652,4467,Farmerberg,Isle of Man,76.6820215,164.980551,2026-01-27T13:36:09,2026-01-27T14:23:29,97.17,25.93
+26,Dieffenbachia Seguine,Dieffenbachia seguine,Sarah Hammond,sarah.hammond@lnhm.co.uk,2144952482,,Schmidtmouth,Guinea-Bissau,-29.066297,18.278546,2026-01-26T14:32:38,2026-01-27T14:23:30,15.91,14.08
+27,Spathiphyllum,Spathiphyllum (group),Paul Wells,paul.wells@lnhm.co.uk,3637976625,,Ruizmouth,Niger,21.876417,-31.458582,2026-01-27T13:28:17,2026-01-27T14:23:29,96.69,16.74
+28,Croton,Codiaeum variegatum,Katherine Hunt,katherine.hunt@lnhm.co.uk,+12638788630,362,Mallorymouth,Cocos (Keeling) Islands,9.707351,72.816634,2026-01-27T13:18:38,2026-01-27T14:23:30,96.35,15.13
+29,Aloe Vera,Aloe vera,Melissa Walker,melissa.walker@lnhm.co.uk,7625191584,,West Jacobfort,Djibouti,36.0357895,148.718821,2026-01-27T14:03:58,2026-01-27T14:23:30,98.87,12.86
+30,Ficus Elastica,Ficus elastica,Kathleen Alvarado,kathleen.alvarado@lnhm.co.uk,8556097979,,Lake Nicolefort,Greece,47.3941165,-24.434894,2026-01-27T13:00:43,2026-01-27T14:23:30,95.35,14.97
+31,Sansevieria Trifasciata,Sansevieria trifasciata,Tara Shannon,tara.shannon@lnhm.co.uk,+12122760013,63686,South Haley,China,-54.5020945,-127.026269,2026-01-26T14:44:18,2026-01-27T14:23:31,18.59,15.61
+32,Philodendron Hederaceum,Philodendron hederaceum,Jessica Benson,jessica.benson@lnhm.co.uk,9874358129,,Joanmouth,Armenia,-35.3487675,-80.319921,2026-01-26T14:35:13,2026-01-27T14:23:32,16.15,16.16
+33,Schefflera Arboricola,Schefflera arboricola,Adam Norman,adam.norman@lnhm.co.uk,+17698260298,,New Thomastown,Ethiopia,23.490859,-19.275947,2026-01-27T13:06:43,2026-01-27T14:23:33,95.43,14.94
+34,Aglaonema Commutatum,Aglaonema commutatum,James Eaton,james.eaton@lnhm.co.uk,+19924473474,,Michaelborough,Bouvet Island (Bouvetoya),-23.513493,91.272237,2026-01-27T13:00:30,2026-01-27T14:23:31,95.45,16.05
+35,Monstera Deliciosa,Monstera deliciosa,Tara Quinn,tara.quinn@lnhm.co.uk,7267198082,,New Shanechester,Tuvalu,-60.291449,-12.594265,2026-01-26T14:46:12,2026-01-27T14:23:33,16.22,16.04
+36,Tacca Integrifolia,Tacca integrifolia,Jacob Santos,jacob.santos@lnhm.co.uk,4623672126,,Port Jason,Singapore,50.7844445,177.490752,2026-01-27T13:26:21,2026-01-27T14:23:33,96.57,16.49
+37,Psychopsis Papilio,,Regina Payne,regina.payne@lnhm.co.uk,4002465288,36436,New Diana,French Guiana,15.4607085,-46.580627,2026-01-27T14:12:50,2026-01-27T14:23:33,99.37,13.38
+38,Saintpaulia Ionantha,Saintpaulia ionantha,Andrea Cook,andrea.cook@lnhm.co.uk,9316214485,063,Schmidtfurt,Cook Islands,-24.459428,-132.113354,2026-01-27T13:30:46,2026-01-27T14:23:34,97.05,14.32
+39,Gaillardia,Gaillardia aestivalis,Jimmy Rhodes,jimmy.rhodes@lnhm.co.uk,+14773477068,,South Erik,Malta,39.852798,-22.673609,2026-01-27T14:01:48,2026-01-27T14:23:34,98.75,13.73
+40,Amaryllis,Hippeastrum (group),Briana Deleon,briana.deleon@lnhm.co.uk,6054682269,187,Greentown,Gibraltar,-19.2927425,-101.687203,2026-01-26T14:28:30,2026-01-27T14:23:33,18.46,14.86
+41,Caladium Bicolor,Caladium bicolor,Charles Hall,charles.hall@lnhm.co.uk,7126105026,,Lake Christopherberg,Montenegro,24.7269645,-7.878364,2026-01-27T14:08:54,2026-01-27T14:23:34,99.17,13.09
+42,Chlorophytum Comosum,Chlorophytum comosum 'Vittatum',Dan Skinner,dan.skinner@lnhm.co.uk,3618109443,,Davidfurt,Russian Federation,-79.460413,77.002058,2026-01-26T14:55:42,2026-01-27T14:23:34,18.31,29.1
+44,Araucaria Heterophylla,Araucaria heterophylla,Ariel English,ariel.english@lnhm.co.uk,5496389648,56913,Davidshire,Niue,55.3241195,145.548092,2026-01-27T13:55:27,2026-01-27T14:23:34,98.36,23.9
+45,Begonia,Begonia 'Art Hodes',Amber Ross,amber.ross@lnhm.co.uk,7684103898,704,Davidchester,Iran,-60.5574125,-66.633609,2026-01-27T13:12:19,2026-01-27T14:23:35,95.87,16.84
+46,Medinilla Magnifica,Medinilla magnifica,Casey Hayden,casey.hayden@lnhm.co.uk,+13185200734,47289,New Lori,Malta,52.915803,-138.082562,2026-01-27T13:56:30,2026-01-27T14:23:35,98.48,15.29
+47,Calliandra Haematocephala,Calliandra haematocephala,Amy Yu,amy.yu@lnhm.co.uk,6064779194,,South Michael,Wallis and Futuna,28.2752,-60.488715,2026-01-27T14:07:26,2026-01-27T14:23:35,98.62,15.46
+48,Zamioculcas Zamiifolia,Zamioculcas zamiifolia,Donna Baxter,donna.baxter@lnhm.co.uk,8994152737,4627,New Laurafurt,Russian Federation,73.4670145,85.12503,2026-01-27T13:46:01,2026-01-27T14:23:36,97.81,12.68
+49,Crassula Ovata,Crassula ovata,Crystal Goodman,crystal.goodman@lnhm.co.uk,5852643806,2321,Amandahaven,Saint Helena,54.8268295,-101.575928,2026-01-27T13:55:52,2026-01-27T14:23:36,98.48,13.49
+50,Epipremnum Aureum,Epipremnum aureum,Gina Meyer,gina.meyer@lnhm.co.uk,+14146160457,430,North Joshuatown,Montenegro,-73.7987385,-22.615264,2026-01-26T14:52:24,2026-01-27T14:23:36,17.39,14.98

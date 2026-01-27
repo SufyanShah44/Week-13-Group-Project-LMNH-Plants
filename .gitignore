@@ -7,3 +7,4 @@
 .venv
 ./pipeline/*.env
 ./terraform/.tfvars
+.env

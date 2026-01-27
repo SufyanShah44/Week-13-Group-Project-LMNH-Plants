@@ -1,0 +1,7 @@
+.terraform
+*.tfstate
+*.tfvars
+*.tf
+.venv
+./pipeline/*.env
+./terraform/.tfvars

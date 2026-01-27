@@ -1,0 +1,59 @@
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+
+jobs:
+    hello_world:
+        name: "Testing"
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Initialising"
+              run: echo Initialising
+      # steps:
+      #     - name: "Get repository"
+      #       uses: actions/checkout@v6
+      #     - name: "Install Python"
+      #       uses: actions/setup-python@v6
+      #     - name: "Install libraries"
+      #       run: pip install -r pipeline/requirements.txt
+      #     - name: "Run tests"
+      #       run: pytest pipeline/
+    pylinting:
+      name: "Run Pylint"
+      runs-on: ubuntu-latest
+      
+      steps:
+          - name: "Get repository"
+            uses: actions/checkout@v6
+          - name: "Install Python"
+            uses: actions/setup-python@v6
+          - name: "Install libraries"
+            run: pip install -r pipeline/requirements.txt
+          - name: "Run Pylint"
+            run: pylint --fail-under=8 pipeline/*.py
+
+    # deploy:
+    #   needs: [testing, pylinting]
+    #   name: "Deploy App"
+    #   runs-on: ubuntu-latest
+
+    #   steps:
+    #     - name: "Get repository"
+    #       uses: actions/checkout@v6
+    #     - name: Deploy to EC2
+    #       uses: easingthemes/ssh-deploy@main
+    #       with:
+    #         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    #         SOURCE: ${{ secrets.SOURCE }}
+    #         REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+    #         REMOTE_USER: ${{ secrets.REMOTE_USER }}
+    #         TARGET: ${{ secrets.TARGET }}
+
+    #         SCRIPT_AFTER:
+    #           cd /home/ec2-user/langdale_zoo_api
+
+    #           pkill -f "python3 app.py"
+
+    #           nohup python3 app.py > app.log 2>&1 &

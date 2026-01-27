@@ -1,7 +1,8 @@
 """Extract script to read plant health information from an API"""
 
-import requests
 import pandas as pd
+import asyncio
+import aiohttp
 
 
 def extract_fields(plant):
@@ -25,34 +26,43 @@ def extract_fields(plant):
     }
 
 
-def load_plant_data():
+async def fetch_plant(session, plant_id):
+    """Fetch a single plant's data"""
+    url = f"https://tools.sigmalabs.co.uk/api/plants/{plant_id}"
+    try:
+        async with session.get(url) as response:
+            return await response.json()
+    except Exception:
+        return None
+
+
+async def load_plant_data():
+    """Load plant data concurrently"""
     plant_id = 1
     miss_limit = 5
-    misses = 0
+    consecutive_misses = 0
     rows = []
 
-    while misses < miss_limit:
-        try:
-            r = requests.get(
-                f"https://tools.sigmalabs.co.uk/api/plants/{plant_id}")
-            data = r.json()
-        except requests.exceptions.RequestException:
-            misses += 1
-            plant_id += 1
-            continue
+    async with aiohttp.ClientSession() as session:
+        while consecutive_misses < miss_limit:
+            tasks = [fetch_plant(session, plant_id + i) for i in range(10)]
+            results = await asyncio.gather(*tasks)
 
-        row = extract_fields(data)
+            for i, data in enumerate(results):
+                if data and data.get("name"):
+                    row = extract_fields(data)
+                    rows.append(row)
+                    consecutive_misses = 0
+                else:
+                    consecutive_misses += 1
 
-        if row["plant_name"]:
-            rows.append(row)
-            misses = 0
-        else:
-            misses += 1
+                    if consecutive_misses >= miss_limit:
+                        break
 
-        plant_id += 1
+            plant_id += 10
 
     return pd.DataFrame(rows)
 
 
 if __name__ == "__main__":
-    load_plant_data()
+    asyncio.run(load_plant_data())

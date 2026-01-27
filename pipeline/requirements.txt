@@ -2,5 +2,7 @@ requests
 pandas
 pylint
 pytest
-aiohttp
-asyncio
+flask
+requests
+python-dotenv
+pyodbc

@@ -8,3 +8,4 @@
 ./pipeline/*.env
 ./terraform/.tfvars
 .env
+**/.env

@@ -47,7 +47,6 @@ CREATE TABLE alpha.plants (
 CREATE TABLE alpha.recordings (
     recording_id   BIGINT IDENTITY(1,1) PRIMARY KEY,
     plant_id       INT NOT NULL,
-    botanist_name  VARCHAR(100) NOT NULL,
     [timestamp]    DATETIME2(0) NOT NULL CONSTRAINT DF_recordings_timestamp DEFAULT SYSUTCDATETIME(),
     soil_moisture  FLOAT NULL,
     temperature    FLOAT NULL,

@@ -88,12 +88,9 @@ def main() -> None:
 
     df["latitude"] = pd.to_numeric(df["latitude"], errors="coerce")
     df["longitude"] = pd.to_numeric(df["longitude"], errors="coerce")
-    df.loc[~df["latitude"].between(-90, 90), "latitude"] = pd.NA
-    df.loc[~df["longitude"].between(-180, 180), "longitude"] = pd.NA
 
     df["soil_moisture"] = round(pd.to_numeric(
         df["soil_moisture"], errors="coerce"), 2)
-    df.loc[df["soil_moisture"] < 0, "soil_moisture"] = pd.NA
 
     df["temperature"] = round(pd.to_numeric(
         df["temperature"], errors="coerce"), 2)

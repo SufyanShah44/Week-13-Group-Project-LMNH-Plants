@@ -1,5 +1,5 @@
 from os import environ as ENV
-import pandas as pd 
+import pandas as pd
 
 from dotenv import load_dotenv
 import pyodbc
@@ -32,7 +32,8 @@ def seed_origin_locations(connection: pyodbc.Connection, dataframe: pd.DataFrame
         INSERT INTO alpha.origin_locations (city, country_id, latitude, longitude)
         VALUES (?, ?, ?, ?)
     """
-    rows = dataframe[["city", "country_id", "latitude", "longitude"]].itertuples(index=False, name=None)
+    rows = dataframe[["city", "country_id", "latitude",
+                      "longitude"]].itertuples(index=False, name=None)
 
     cur.executemany(insert_sql, rows)
     connection.commit()
@@ -47,7 +48,7 @@ def seed_botanists(connection: pyodbc.Connection, dataframe: pd.DataFrame) -> No
     """
     rows = dataframe[["botanist_name", "botanist_email",
                       "botanist_phone"]].itertuples(index=False, name=None)
-    
+
     cur.executemany(insert_sql, rows)
     connection.commit()
     cur.close()
@@ -64,8 +65,9 @@ def seed_plants(connection: pyodbc.Connection, dataframe: pd.DataFrame) -> None:
     df = dataframe.loc[:, ["plant_id", "name",
                            "scientific_name", "origin_location_id"]].copy()
 
-    df["plant_id"] = pd.to_numeric(df["plant_id"], errors="raise")  
-    df["origin_location_id"] = pd.to_numeric(df["origin_location_id"], errors="coerce")
+    df["plant_id"] = pd.to_numeric(df["plant_id"], errors="raise")
+    df["origin_location_id"] = pd.to_numeric(
+        df["origin_location_id"], errors="coerce")
 
     df = df.where(pd.notnull(df), None)
 
@@ -82,44 +84,6 @@ def seed_plants(connection: pyodbc.Connection, dataframe: pd.DataFrame) -> None:
     connection.commit()
     cur.close()
 
-
-def seed_recordings(connection, dataframe):
-    cur = connection.cursor()
-
-    insert_sql = """
-        INSERT INTO alpha.recordings (
-            plant_id, [timestamp], soil_moisture, temperature, last_watered
-        )
-        VALUES (?, ?, ?, ?, ?)
-    """
-
-    df = dataframe[[
-        "plant_id",
-        "recording_taken_ts",
-        "soil_moisture",
-        "temperature",
-        "last_watered_ts",
-    ]].copy()
-
-    df["plant_id"] = pd.to_numeric(df["plant_id"], errors="coerce")
-    df = df[df["plant_id"].notna()]
-    df["plant_id"] = df["plant_id"].astype("int64")
-
-    df["recording_taken_ts"] = pd.to_datetime(df["recording_taken_ts"], errors="raise")
-    df["soil_moisture"] = pd.to_numeric(df["soil_moisture"], errors="coerce")
-    df["temperature"] = pd.to_numeric(df["temperature"], errors="coerce")
-    df["last_watered_ts"] = pd.to_datetime(df["last_watered_ts"], errors="coerce")
-
-    df = df.where(pd.notnull(df), None)
-
-    rows = [
-        (int(pid), ts, sm, temp, lw)
-        for pid, ts, sm, temp, lw in df.itertuples(index=False, name=None)
-    ]
-    
-    cur.executemany(insert_sql, rows)
-    connection.commit()
-    cur.close()
 
 def fetch_country_map(connection: pyodbc.Connection) -> pd.DataFrame:
     return pd.read_sql("SELECT country_id, country_name FROM alpha.countries", connection)
@@ -138,6 +102,7 @@ def fetch_plant_map(connection: pyodbc.Connection) -> pd.DataFrame:
     return pd.read_sql(
         "SELECT plant_id, name, scientific_name, origin_location_id FROM alpha.plants", connection)
 
+
 if __name__ == "__main__":
     load_dotenv()
 
@@ -148,32 +113,36 @@ if __name__ == "__main__":
     conn = handler()
 
     try:
-        #Countries
+        # Countries
         seed_countries(conn, df[["country_name"]].drop_duplicates())
         df = df.merge(fetch_country_map(conn), on="country_name", how="left")
 
-        #Origin locations
+        # Origin locations
         df["country_id"] = pd.to_numeric(df["country_id"], errors="coerce")
         df["latitude"] = pd.to_numeric(df["latitude"], errors="coerce")
         df["longitude"] = pd.to_numeric(df["longitude"], errors="coerce")
 
-        origin_df = df[["city", "country_id", "latitude", "longitude"]].drop_duplicates()
+        origin_df = df[["city", "country_id",
+                        "latitude", "longitude"]].drop_duplicates()
         origin_df = origin_df.where(pd.notnull(origin_df), None)
 
         seed_origin_locations(conn, origin_df)
-        df = df.merge(fetch_origin_location_map(conn), on=["city", "country_id"], how="left")
+        df = df.merge(fetch_origin_location_map(conn), on=[
+                      "city", "country_id"], how="left")
 
-        #Botanists
+        # Botanists
         if "botanist_phone" in df.columns:
             df["botanist_phone"] = df["botanist_phone"].astype("string")
 
-        botanists_df = df[["botanist_name", "botanist_email", "botanist_phone"]].drop_duplicates()
+        botanists_df = df[["botanist_name", "botanist_email",
+                           "botanist_phone"]].drop_duplicates()
         botanists_df = botanists_df.where(pd.notnull(botanists_df), None)
 
         seed_botanists(conn, botanists_df)
-        df = df.merge(fetch_botanist_map(conn), left_on="botanist_email", right_on="email", how="left")
+        df = df.merge(fetch_botanist_map(conn),
+                      left_on="botanist_email", right_on="email", how="left")
 
-        #Plants
+        # Plants
         plants_df = (
             df[["plant_id", "plant_name", "scientific_name", "origin_location_id"]]
             .drop_duplicates()
@@ -184,7 +153,8 @@ if __name__ == "__main__":
         if "plant_id" in df.columns:
             df = df.drop(columns=["plant_id"])
 
-        plant_map = fetch_plant_map(conn)[["plant_id", "name", "scientific_name", "origin_location_id"]]
+        plant_map = fetch_plant_map(
+            conn)[["plant_id", "name", "scientific_name", "origin_location_id"]]
 
         df = df.merge(
             plant_map,
@@ -198,8 +168,6 @@ if __name__ == "__main__":
                 if c in df.columns:
                     df = df.rename(columns={c: "plant_id"})
                     break
-
-        seed_recordings(conn, df)
 
     finally:
         conn.close()

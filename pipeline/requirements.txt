@@ -2,7 +2,5 @@ requests
 pandas
 pylint
 pytest
-flask
-requests
 python-dotenv
 pyodbc

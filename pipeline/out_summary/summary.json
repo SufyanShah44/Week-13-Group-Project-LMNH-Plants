@@ -1,0 +1,148 @@
+{
+  "rows": 92,
+  "unique_plants": 48,
+  "unique_botanists": 48,
+  "timestamp_range": {
+    "min": "2026-01-28T14:02:52",
+    "max": "2026-01-28T14:10:08"
+  },
+  "missingness_rate": {
+    "recording_id": 0.0,
+    "plant_id": 0.0,
+    "botanist_id": 0.0,
+    "timestamp": 0.0,
+    "soil_moisture": 0.0,
+    "temperature": 0.0,
+    "last_watered": 0.0
+  },
+  "duplicate_recording_id_count": 0,
+  "soil_moisture_summary": {
+    "count": 92,
+    "mean": 61.6634879251681,
+    "std": 40.14441199477854,
+    "min": -23.059781645714295,
+    "p25": 19.822635271885055,
+    "median": 96.29568245591447,
+    "p75": 97.96444799670786,
+    "max": 99.9410008539945
+  },
+  "temperature_summary": {
+    "count": 92,
+    "mean": 15.421857054947363,
+    "std": 1.3893943573447898,
+    "min": 12.920566807352639,
+    "p25": 14.363820638645109,
+    "median": 15.558805300723346,
+    "p75": 16.47263077056536,
+    "max": 18.32466769217976
+  },
+  "days_since_last_watered_summary": {
+    "count": 92,
+    "mean": 0.45949615036231883,
+    "std": 0.4784142792099757,
+    "min": 0.0007407407407407407,
+    "p25": 0.02409722222222222,
+    "median": 0.04231481481481481,
+    "p75": 0.9761892361111111,
+    "max": 0.9980324074074074
+  },
+  "flags": {
+    "negative_days_since_last_watered": 0,
+    "missing_timestamp": 0,
+    "missing_last_watered": 0
+  },
+  "top_plants_by_readings": [
+    {
+      "plant_id": 1,
+      "readings": 2
+    },
+    {
+      "plant_id": 2,
+      "readings": 2
+    },
+    {
+      "plant_id": 3,
+      "readings": 2
+    },
+    {
+      "plant_id": 4,
+      "readings": 2
+    },
+    {
+      "plant_id": 6,
+      "readings": 2
+    },
+    {
+      "plant_id": 8,
+      "readings": 2
+    },
+    {
+      "plant_id": 9,
+      "readings": 2
+    },
+    {
+      "plant_id": 10,
+      "readings": 2
+    },
+    {
+      "plant_id": 11,
+      "readings": 2
+    },
+    {
+      "plant_id": 12,
+      "readings": 2
+    }
+  ],
+  "top_botanists_by_readings": [
+    {
+      "botanist_id": 1,
+      "readings": 2,
+      "plants": 1
+    },
+    {
+      "botanist_id": 2,
+      "readings": 2,
+      "plants": 1
+    },
+    {
+      "botanist_id": 3,
+      "readings": 2,
+      "plants": 1
+    },
+    {
+      "botanist_id": 4,
+      "readings": 2,
+      "plants": 1
+    },
+    {
+      "botanist_id": 6,
+      "readings": 2,
+      "plants": 1
+    },
+    {
+      "botanist_id": 7,
+      "readings": 2,
+      "plants": 1
+    },
+    {
+      "botanist_id": 8,
+      "readings": 2,
+      "plants": 1
+    },
+    {
+      "botanist_id": 9,
+      "readings": 2,
+      "plants": 1
+    },
+    {
+      "botanist_id": 10,
+      "readings": 2,
+      "plants": 1
+    },
+    {
+      "botanist_id": 11,
+      "readings": 2,
+      "plants": 1
+    }
+  ]
+}

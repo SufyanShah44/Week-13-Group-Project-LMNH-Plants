@@ -9,3 +9,7 @@
 ./terraform/.tfvars
 .env
 **/.env
+./summary/out_summary/
+./summary/out_summary/*
+./summary/out_summary/.csv
+./summary/out_summary/*.csv

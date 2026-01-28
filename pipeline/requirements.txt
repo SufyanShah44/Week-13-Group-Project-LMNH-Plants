@@ -6,3 +6,4 @@ python-dotenv
 pyodbc
 boto3
 pyarrow
+aiohttp

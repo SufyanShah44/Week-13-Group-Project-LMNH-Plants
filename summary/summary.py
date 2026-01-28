@@ -1,6 +1,5 @@
 """
-Produces summary metrics for plant readings data, writes local outputs,
-and uploads the daily summary to S3 as partitioned Parquet files.
+Partition plant readings by day and upload to S3 as Parquet.
 """
 
 import os
@@ -32,14 +31,14 @@ def get_sql_connection():
 
 def fetch_readings_from_db(table_name="alpha.recordings"):
     """
-    Fetch readings from SQL Server (without pandas SQL helpers).
+    Returns results from queried recordings table
     """
     query = f"""
         SELECT
             recording_id,
             plant_id,
             botanist_id,
-            [timestamp],
+            timestamp,
             soil_moisture,
             temperature,
             last_watered
@@ -60,6 +59,9 @@ def fetch_readings_from_db(table_name="alpha.recordings"):
 
 
 def _ensure_types(df):
+    """
+Casts to type to ensure data is processed as correct types
+    """
     df = df.copy()
 
     for col in ["recording_id", "plant_id", "botanist_id"]:
@@ -196,6 +198,9 @@ def summarise_readings(df):
 
 
 def write_outputs(summary, tables, out_dir="out_summary"):
+    """
+Writes outputs to files locally for inspection.
+    """
     os.makedirs(out_dir, exist_ok=True)
 
     with open(os.path.join(out_dir, "summary.json"), "w", encoding="utf-8") as f:
@@ -207,6 +212,9 @@ def write_outputs(summary, tables, out_dir="out_summary"):
 
 
 def get_s3_client():
+    """
+    Returns a boto3 client session if details are valid
+    """
     region = ENV.get("AWS_REGION")
     if region:
         return boto3.client("s3", region_name=region)
@@ -265,11 +273,7 @@ def upload_daily_partitions_to_s3(daily_df):
 
 def run_summary(df=None, table_name="alpha.recordings"):
     """
-    Main entry-point.
-
-    - If df is provided: summarise it.
-    - Otherwise: fetch from SQL Server and summarise that.
-    - Writes local JSON/CSVs and uploads daily parquet partitions to S3.
+    Main entry-point
     """
     if df is None:
         df = fetch_readings_from_db(table_name=table_name)

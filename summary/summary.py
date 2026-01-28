@@ -1,13 +1,16 @@
 """
-Produces summary metrics for plant readings data.
+Partition plant readings by day and upload to S3 as Parquet.
 """
 
 import os
 from os import environ as ENV
-import json
+from io import BytesIO
 
+import boto3
 import pandas as pd
 import pyodbc
+import pyarrow as pa
+import pyarrow.parquet as pq
 from dotenv import load_dotenv
 
 
@@ -15,16 +18,20 @@ load_dotenv()
 
 
 def get_sql_connection():
-    conn_str = (f"DRIVER={{{ENV['DB_DRIVER']}}};SERVER={ENV['DB_HOST']};"
-                f"PORT={ENV['DB_PORT']};DATABASE={ENV['DB_NAME']};"
-                f"UID={ENV['DB_USERNAME']};PWD={ENV['DB_PASSWORD']};Encrypt=no;")
+    conn_str = (
+        f"DRIVER={{{ENV['DB_DRIVER']}}};"
+        f"SERVER={ENV['DB_HOST']};"
+        f"PORT={ENV['DB_PORT']};"
+        f"DATABASE={ENV['DB_NAME']};"
+        f"UID={ENV['DB_USERNAME']};"
+        f"PWD={ENV['DB_PASSWORD']};"
+        "Encrypt=no;"
+    )
     return pyodbc.connect(conn_str)
 
 
 def fetch_readings_from_db(table_name="alpha.recordings"):
-    """
-    Fetch readings from SQL Server
-    """
+    """Returns results from queried recordings table"""
     query = f"""
         SELECT
             recording_id,
@@ -47,14 +54,13 @@ def fetch_readings_from_db(table_name="alpha.recordings"):
     cursor.close()
     conn.close()
 
-    df = pd.DataFrame.from_records(rows, columns=columns)
-    return df
+    return pd.DataFrame.from_records(rows, columns=columns)
 
 
-def _ensure_types(df):
+def ensure_types(df):
+    """Casts to type to ensure data is processed as correct types"""
     df = df.copy()
 
-    # Keep as nullable numeric where possible
     for col in ["recording_id", "plant_id", "botanist_id"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce").astype("Int64")
@@ -70,169 +76,112 @@ def _ensure_types(df):
     return df
 
 
-def summarise_readings(df):
+def get_s3_client():
+    """Returns S3 client given valid credentials"""
+    region = ENV.get("AWS_REGION")
+    return boto3.client("s3", region_name=region)
+
+
+def df_to_parquet_bytes(df):
     """
-    Returns:
-      - summary dict
-      - a dict of supporting DataFrames
+    Convert a DataFrame to Parquet bytes using pyarrow.
     """
-    df = _ensure_types(df)
+    df = df[
+        [
+            "recording_id",
+            "plant_id",
+            "botanist_id",
+            "timestamp",
+            "soil_moisture",
+            "temperature",
+            "last_watered",
+        ]
+    ].copy()
 
-    required = [
-        "recording_id",
-        "plant_id",
-        "botanist_id",
-        "timestamp",
-        "soil_moisture",
-        "temperature",
-        "last_watered",
-    ]
-    missing_cols = [c for c in required if c not in df.columns]
-    if missing_cols:
-        raise ValueError(f"Missing required columns: {missing_cols}")
+    table = pa.Table.from_pandas(df, preserve_index=False)
+    buf = BytesIO()
+    pq.write_table(table, buf, compression="snappy")
+    buf.seek(0)
+    return buf.getvalue()
 
-    n_rows = int(len(df))
-    n_plants = int(df["plant_id"].nunique(dropna=True))
-    n_botanists = int(df["botanist_id"].nunique(dropna=True))
 
-    ts_min = df["timestamp"].min()
-    ts_max = df["timestamp"].max()
+def build_s3_key(day, prefix):
+    """
+    day: datetime.date
+    prefix: optional string
+    """
+    yyyy = f"{day.year:04d}"
+    mm = f"{day.month:02d}"
+    dd = f"{day.day:02d}"
 
-    # Missingness
-    missingness = {}
-    for c in required:
-        missingness[c] = float(df[c].isna().mean())
+    if prefix:
+        prefix = prefix.strip("/")
+        return f"{prefix}/year={yyyy}/month={mm}/day={dd}/reading.parquet"
 
-    # Duplicate primary key check
-    dup_recording_id = int(df["recording_id"].duplicated().sum())
+    return f"year={yyyy}/month={mm}/day={dd}/reading.parquet"
 
-    # Per-reading derived metric: days since last watered at time of recording
-    df["days_since_last_watered"] = (
-        df["timestamp"] - df["last_watered"]).dt.total_seconds() / 86400.0
 
-    # Overall numeric summaries
-    def num_summary(series):
-        return {
-            "count": int(series.notna().sum()),
-            "mean": float(series.mean()) if series.notna().any() else None,
-            "std": float(series.std()) if series.notna().any() else None,
-            "min": float(series.min()) if series.notna().any() else None,
-            "p25": float(series.quantile(0.25)) if series.notna().any() else None,
-            "median": float(series.median()) if series.notna().any() else None,
-            "p75": float(series.quantile(0.75)) if series.notna().any() else None,
-            "max": float(series.max()) if series.notna().any() else None,
-        }
-
-    soil_stats = num_summary(df["soil_moisture"])
-    temp_stats = num_summary(df["temperature"])
-    watered_gap_stats = num_summary(df["days_since_last_watered"])
-
-    # Flagging erroneous values
-    flagged = {
-        "negative_days_since_last_watered": int((df["days_since_last_watered"] < 0).sum(skipna=True)),
-        "missing_timestamp": int(df["timestamp"].isna().sum()),
-        "missing_last_watered": int(df["last_watered"].isna().sum()),
-    }
-
-    # Aggregates per plant and per botanist
-    per_plant = (
-        df.groupby("plant_id", dropna=True)
-        .agg(
-            readings=("recording_id", "count"),
-            soil_mean=("soil_moisture", "mean"),
-            soil_min=("soil_moisture", "min"),
-            soil_max=("soil_moisture", "max"),
-            temp_mean=("temperature", "mean"),
-            temp_min=("temperature", "min"),
-            temp_max=("temperature", "max"),
-            last_seen=("timestamp", "max"),
-        )
-        .reset_index()
-        .sort_values(["readings", "plant_id"], ascending=[False, True])
+def upload_partition(s3, bucket, key, parquet_bytes):
+    """Uploads partition to S3 bucket"""
+    s3.put_object(
+        Bucket=bucket,
+        Key=key,
+        Body=parquet_bytes,
+        ContentType="application/octet-stream",
     )
 
-    per_botanist = (
-        df.groupby("botanist_id", dropna=True)
-        .agg(
-            readings=("recording_id", "count"),
-            plants=("plant_id", pd.Series.nunique),
-            first_seen=("timestamp", "min"),
-            last_seen=("timestamp", "max"),
-        )
-        .reset_index()
-        .sort_values(["readings", "botanist_id"], ascending=[False, True])
-    )
 
-    # Daily roll-up
-    daily = (
-        df.assign(day=df["timestamp"].dt.date)
-        .groupby("day", dropna=True)
-        .agg(
-            readings=("recording_id", "count"),
-            plants=("plant_id", pd.Series.nunique),
-            botanists=("botanist_id", pd.Series.nunique),
-            soil_mean=("soil_moisture", "mean"),
-            temp_mean=("temperature", "mean"),
-        )
-        .reset_index()
-        .sort_values("day")
-    )
+def partition_and_upload(df, table_name="alpha.recordings"):
+    """
+    Partitions on timestamp date and uploads each partition as reading.parquet.
+    Returns a small report dict for logging/monitoring.
+    """
+    df = ensure_types(df)
 
-    summary = {
-        "rows": n_rows,
-        "unique_plants": n_plants,
-        "unique_botanists": n_botanists,
-        "timestamp_range": {
-            "min": None if pd.isna(ts_min) else ts_min.isoformat(),
-            "max": None if pd.isna(ts_max) else ts_max.isoformat(),
-        },
-        "missingness_rate": missingness,
-        "duplicate_recording_id_count": dup_recording_id,
-        "soil_moisture_summary": soil_stats,
-        "temperature_summary": temp_stats,
-        "days_since_last_watered_summary": watered_gap_stats,
-        "flags": flagged,
-        "top_plants_by_readings": per_plant.head(10)[["plant_id", "readings"]].to_dict(orient="records"),
-        "top_botanists_by_readings": per_botanist.head(10)[["botanist_id", "readings", "plants"]].to_dict(orient="records"),
+    # Only partition rows with a valid timestamp
+    df = df.dropna(subset=["timestamp"]).copy()
+    if df.empty:
+        return {"partitions_uploaded": 0, "rows_uploaded": 0, "table": table_name}
+
+    df["day"] = df["timestamp"].dt.date
+
+    bucket = ENV["S3_BUCKET"]
+    prefix = ENV.get("S3_PREFIX")
+    s3 = get_s3_client()
+
+    partitions_uploaded = 0
+    rows_uploaded = 0
+
+    # Deterministic order (useful for reproducible runs / debugging)
+    for day, g in df.groupby("day", sort=True):
+        parquet_bytes = df_to_parquet_bytes(g.drop(columns=["day"]))
+        key = build_s3_key(day, prefix)
+        upload_partition(s3, bucket, key, parquet_bytes)
+
+        partitions_uploaded += 1
+        rows_uploaded += int(len(g))
+
+    return {
+        "table": table_name,
+        "partitions_uploaded": partitions_uploaded,
+        "rows_uploaded": rows_uploaded,
+        "s3_bucket": bucket,
+        "s3_prefix": prefix,
     }
 
-    tables = {
-        "per_plant": per_plant,
-        "per_botanist": per_botanist,
-        "daily": daily,
-    }
 
-    return summary, tables
-
-
-def write_outputs(summary, tables, out_dir="out_summary"):
-    os.makedirs(out_dir, exist_ok=True)
-
-    with open(os.path.join(out_dir, "summary.json"), "w", encoding="utf-8") as f:
-        json.dump(summary, f, indent=2)
-
-    # CSVs for inspection or dashboards
-    tables["per_plant"].to_csv(os.path.join(
-        out_dir, "per_plant.csv"), index=False)
-    tables["per_botanist"].to_csv(os.path.join(
-        out_dir, "per_botanist.csv"), index=False)
-    tables["daily"].to_csv(os.path.join(out_dir, "daily.csv"), index=False)
+def main():
+    """Main execution block"""
+    table_name = ENV.get("RECORDINGS_TABLE", "alpha.recordings")
+    df = fetch_readings_from_db(table_name=table_name)
+    report = partition_and_upload(df, table_name=table_name)
+    print(report)
 
 
-def run_summary(df=None, table_name="alpha.recordings"):
-    """
-    Main entry-point for your pipeline.
-
-    - If df is provided: summarise it.
-    - Otherwise: fetch from SQL Server and summarise that.
-    """
-    if df is None:
-        df = fetch_readings_from_db(table_name=table_name)
-
-    summary, tables = summarise_readings(df)
-    write_outputs(summary, tables)
-    return summary, tables
+def lambda_handler(event, context):
+    """AWS Lambda entrypoint"""
+    pass
 
 
 if __name__ == "__main__":
-    run_summary()
+    main()

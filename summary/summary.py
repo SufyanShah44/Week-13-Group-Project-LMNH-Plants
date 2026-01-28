@@ -234,5 +234,22 @@ def run_summary(df=None, table_name="alpha.recordings"):
     return summary, tables
 
 
+def truncate_table(connection: pyodbc.Connection, table: str = "alpha.recordings") -> None:
+    """Function to truncate the recordings table"""
+
+    cur = connection.cursor()
+
+    query = """
+        TRUNCATE TABLE alpha.recordings
+        ;
+"""
+    cur.execute(query)
+    connection.commit()
+    connection.close()
+
+
 if __name__ == "__main__":
+    load_dotenv()
+    conn = get_sql_connection()
     run_summary()
+    truncate_table(conn)

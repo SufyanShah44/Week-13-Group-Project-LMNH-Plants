@@ -39,9 +39,10 @@ def insert_recordings(connection: pyodbc.Connection, df: pd.DataFrame) -> None:
     connection.commit()
     cur.close()
 
+
 if __name__ == "__main__":
     load_dotenv()
-
     conn = handler()
 
-    insert_recordings(conn, df)
+    df = pd.read_csv("output.csv")
+

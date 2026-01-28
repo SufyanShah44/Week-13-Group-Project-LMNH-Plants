@@ -47,10 +47,13 @@ CREATE TABLE alpha.plants (
 CREATE TABLE alpha.recordings (
     recording_id   BIGINT IDENTITY(1,1) PRIMARY KEY,
     plant_id       INT NOT NULL,
+    botanist_id    INT NOT NULL,
     [timestamp]    DATETIME2(0) NOT NULL CONSTRAINT DF_recordings_timestamp DEFAULT SYSUTCDATETIME(),
     soil_moisture  FLOAT NULL,
     temperature    FLOAT NULL,
     last_watered   DATETIME2(0) NULL,
     CONSTRAINT FK_recordings_plants
-        FOREIGN KEY (plant_id) REFERENCES alpha.plants(plant_id)
+        FOREIGN KEY (plant_id) REFERENCES alpha.plants(plant_id),
+    CONSTRAINT FK_recordings_botanists
+        FOREIGN KEY (botanist_id) REFERENCES alpha.botanists(botanist_id)
 );

@@ -4,3 +4,4 @@ pylint
 pytest
 python-dotenv
 pyodbc
+aiohttp

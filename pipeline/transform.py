@@ -37,7 +37,6 @@ def fetch_botanist_lookup(conn: pyodbc.Connection) -> Dict[str, int]:
     cursor.execute(query)
 
     lookup = {row.name: row.botanist_id for row in cursor.fetchall()}
-    print(lookup)
     cursor.close()
     return lookup
 

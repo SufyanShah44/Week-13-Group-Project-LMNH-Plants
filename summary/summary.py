@@ -254,9 +254,9 @@ def upload_daily_partitions_to_s3(daily_df, s3_prefix=None, filename="reading.pa
 
     for _, row in df.iterrows():
         day = row["day"]
-        yyyy = f"{day.year:04d}"
-        mm = f"{day.month:02d}"
-        dd = f"{day.day:02d}"
+        yyyy = f"year={day.year:04d}"
+        mm = f"month={day.month:02d}"
+        dd = f"day={day.day:02d}"
 
         one = pd.DataFrame([row.to_dict()])
 

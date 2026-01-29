@@ -2,21 +2,20 @@
 Partition plant readings by day and upload to S3 as Parquet.
 """
 
-import os
 from os import environ as ENV
+import os
 import json
 from io import BytesIO
-
 import pandas as pd
 import pyodbc
-import boto3
 from dotenv import load_dotenv
-
+import boto3
 
 load_dotenv()
 
 
 def get_sql_connection():
+    """Returns a MS SQL Server connection"""
     conn_str = (
         f"DRIVER={{{ENV['DB_DRIVER']}}};"
         f"SERVER={ENV['DB_HOST']};"
@@ -60,7 +59,7 @@ def fetch_readings_from_db(table_name="alpha.recordings"):
 
 def _ensure_types(df):
     """
-Casts to type to ensure data is processed as correct types
+    Casts data to expected types to ensure data is processed as correct types
     """
     df = df.copy()
 
@@ -118,6 +117,9 @@ def summarise_readings(df):
     ).dt.total_seconds() / 86400.0
 
     def num_summary(series):
+        """
+        Returns a summary dictionary
+        """
         return {
             "count": int(series.notna().sum()),
             "mean": float(series.mean()) if series.notna().any() else None,
@@ -163,6 +165,7 @@ def summarise_readings(df):
         .agg(
             readings=("recording_id", "count"),
             plants=("plant_id", pd.Series.nunique),
+            botanists=("botanist_id", pd.Series.nunique),
             soil_mean=("soil_moisture", "mean"),
             temp_mean=("temperature", "mean"),
         )
@@ -197,9 +200,10 @@ def summarise_readings(df):
     return summary, tables
 
 
-def write_outputs(summary, tables, out_dir="out_summary"):
+def write_outputs(summary, tables, out_dir="/tmp/out_summary"):
     """
-Writes outputs to files locally for inspection.
+    Writes outputs to files locally for inspection.
+    Can be disabled if needed.
     """
     os.makedirs(out_dir, exist_ok=True)
 
@@ -215,22 +219,26 @@ def get_s3_client():
     """
     Returns a boto3 client session if details are valid
     """
+
     region = ENV.get("AWS_REGION")
     if region:
         return boto3.client("s3", region_name=region)
     return boto3.client("s3")
 
 
-def upload_daily_partitions_to_s3(daily_df):
+def upload_daily_partitions_to_s3(daily_df, s3_prefix=None, filename="reading.parquet"):
     """
     Upload one parquet file per day:
-      yyyy/mm/dd/reading.parquet
+      yyyy/mm/dd/<filename>
     """
     bucket = ENV.get("S3_BUCKET")
     if not bucket:
         raise ValueError("S3_BUCKET is not set in the environment.")
 
-    prefix = ENV.get("S3_PREFIX").strip("/")
+    if s3_prefix is None:
+        s3_prefix = ENV.get("S3_PREFIX", "")
+
+    prefix = (s3_prefix or "").strip("/")
     s3 = get_s3_client()
 
     df = daily_df.copy()
@@ -241,6 +249,8 @@ def upload_daily_partitions_to_s3(daily_df):
     if df["day"].isna().any():
         raise ValueError(
             "daily_df contains invalid 'day' values that could not be parsed.")
+
+    uploaded = 0
 
     for _, row in df.iterrows():
         day = row["day"]
@@ -255,12 +265,12 @@ def upload_daily_partitions_to_s3(daily_df):
             one.to_parquet(buf, index=False)
         except Exception as e:
             raise RuntimeError(
-                "Failed to write Parquet."
+                "Failed to write Parquet. Ensure 'pyarrow' (recommended) or 'fastparquet' is installed."
             ) from e
 
         buf.seek(0)
 
-        key_parts = [p for p in [prefix, yyyy, mm, dd, "summary.parquet"] if p]
+        key_parts = [p for p in [prefix, yyyy, mm, dd, filename] if p]
         s3_key = "/".join(key_parts)
 
         s3.put_object(
@@ -269,35 +279,80 @@ def upload_daily_partitions_to_s3(daily_df):
             Body=buf.getvalue(),
             ContentType="application/octet-stream",
         )
+        uploaded += 1
+
+    return uploaded
 
 
-def run_summary(df=None, table_name="alpha.recordings"):
+def truncate_table(connection, table="alpha.recordings"):
     """
-    Main entry-point
+    Truncate the source table.
+    """
+    cur = connection.cursor()
+    cur.execute(f"TRUNCATE TABLE {table};")
+    connection.commit()
+    cur.close()
+    connection.close()
+
+
+def run_summary(df=None, table_name="alpha.recordings", s3_prefix=None, write_local_outputs=False):
+    """
+    Runs the summary process
     """
     if df is None:
         df = fetch_readings_from_db(table_name=table_name)
 
     summary, tables = summarise_readings(df)
-    write_outputs(summary, tables)
-    upload_daily_partitions_to_s3(tables["daily"])
 
-    return summary, tables
+    if write_local_outputs:
+        write_outputs(summary, tables)
+
+    uploaded = upload_daily_partitions_to_s3(
+        tables["daily"],
+        s3_prefix=s3_prefix,
+        filename="reading.parquet",
+    )
+
+    return summary, tables, uploaded
 
 
-def truncate_table(connection: pyodbc.Connection, table: str = "alpha.recordings") -> None:
-    """Function to truncate the recordings table"""
+def lambda_handler(event, context):
+    """
+    AWS Lambda entrypoint.
+    """
+    event = event or {}
 
-    cur = connection.cursor()
+    table_name = event.get("table_name", "alpha.recordings")
+    s3_prefix = event.get("s3_prefix", ENV.get("S3_PREFIX", ""))
+    truncate_after_upload = bool(event.get("truncate_after_upload", True))
+    write_local_outputs = bool(event.get("write_local_outputs", False))
 
-    query = """
-        TRUNCATE TABLE alpha.recordings
-        ;
-"""
-    cur.execute(query)
-    connection.commit()
-    connection.close()
+    summary, tables, uploaded = run_summary(
+        df=None,
+        table_name=table_name,
+        s3_prefix=s3_prefix,
+        write_local_outputs=write_local_outputs,
+    )
+
+    if truncate_after_upload:
+        conn = get_sql_connection()
+        truncate_table(conn, table=table_name)
+
+    return {
+        "statusCode": 200,
+        "body": json.dumps(
+            {
+                "message": "Daily summaries uploaded to S3.",
+                "source_table": table_name,
+                "s3_bucket": ENV.get("S3_BUCKET"),
+                "s3_prefix": s3_prefix,
+                "days_uploaded": uploaded,
+                "timestamp_range": summary.get("timestamp_range"),
+                "rows_summarised": summary.get("rows"),
+            }
+        ),
+    }
 
 
 if __name__ == "__main__":
-    run_summary()
+    run_summary(write_local_outputs=True)

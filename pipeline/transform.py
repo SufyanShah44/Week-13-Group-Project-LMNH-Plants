@@ -44,6 +44,7 @@ def fetch_botanist_lookup(conn: pyodbc.Connection) -> Dict[str, int]:
 def transform_readings(df: pd.DataFrame) -> pd.DataFrame:
     """
     Transform readings DataFrame into load-ready format.
+    Drops rows with extreme soil_moisture or temperature values.
     """
     conn = get_sql_connection()
     botanist_lookup = fetch_botanist_lookup(conn)
@@ -66,6 +67,11 @@ def transform_readings(df: pd.DataFrame) -> pd.DataFrame:
     df["soil_moisture"] = pd.to_numeric(df["soil_moisture"], errors="coerce")
     df["temperature"] = pd.to_numeric(df["temperature"], errors="coerce")
 
+    df = df[
+        df["soil_moisture"].between(0, 100)
+        & df["temperature"].between(0, 40)
+    ]
+
     return df[
         [
             "plant_id",
@@ -73,6 +79,6 @@ def transform_readings(df: pd.DataFrame) -> pd.DataFrame:
             "timestamp",
             "soil_moisture",
             "temperature",
-            "last_watered"
+            "last_watered",
         ]
     ]

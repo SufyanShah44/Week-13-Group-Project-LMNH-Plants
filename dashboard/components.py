@@ -22,9 +22,9 @@ def sidebar(data):
 
 def soil_moisture_over_time(data):
     st.subheader('Soil Moisture')
-    line1 = alt.Chart(data).mark_line().encode(
-        x=alt.X('timestamp:T', timeUnit="minutes", title="Time"),
-        y=alt.Y('soil_moisture:Q', title="Soil Moisture %"),
+    line1 = alt.Chart(data).mark_line(interpolate='monotone', strokeWidth=2).encode(
+        x=alt.X('timestamp:T', timeUnit="hoursminutes", title="Time"),
+        y=alt.Y('soil_moisture:Q', title="Soil Moisture %"), 
         color=alt.Color('plant_id:N')
     )
     st.altair_chart(line1, width='stretch')

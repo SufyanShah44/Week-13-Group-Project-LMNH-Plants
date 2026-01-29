@@ -61,6 +61,7 @@ def display_dashboard(short_term_data):
         temperature_over_time(filtered_data)
 
 
+
 if __name__ == "__main__":
     load_dotenv()
     short_term_data = load_rds_data()

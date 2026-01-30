@@ -13,7 +13,6 @@
 ./summary/out_summary/*
 ./summary/out_summary/.csv
 ./summary/out_summary/*.csv
-
 __pycache__
 .pytest_cache
 .pyc

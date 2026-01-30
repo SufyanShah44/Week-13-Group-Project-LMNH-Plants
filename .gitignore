@@ -13,5 +13,8 @@
 ./summary/out_summary/*
 ./summary/out_summary/.csv
 ./summary/out_summary/*.csv
-pipeline/.pytest_cache
-pipeline/__pycache__
+__pycache__
+.pytest_cache
+.pyc
+/coverage
+.vscode

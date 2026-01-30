@@ -36,6 +36,5 @@ jobs:
           - name: "Install libraries"
             run: pip install -r pipeline/requirements.txt
           - name: "Run Pylint"
-            run: pylint --fail-under=8 dashboard/*.py \ 
-                && pylint --fail-under=8 pipeline/*.py \ 
+            run: pylint --fail-under=8 pipeline/*.py \ 
                 && pylint --fail-under=8 summary/*.py

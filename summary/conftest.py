@@ -1,5 +1,5 @@
 """Fixtures for test file"""
-
+# pylint: skip-file
 import pandas as pd
 import pytest
 

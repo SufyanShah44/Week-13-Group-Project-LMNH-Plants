@@ -37,7 +37,7 @@ jobs:
             uses: actions/setup-python@v6
           - name: "Install Pipeline libraries"
             run: pip install -r pipeline/requirements.txt
-          - name: "Install dashboard libraries"
+          - name: "Install Dashboard libraries"
             run: pip install -r dashboard/requirements.txt
           - name: "Run Pylint"
             run: pylint --fail-under=8 pipeline/*.py \ 

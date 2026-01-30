@@ -49,7 +49,7 @@ def test_transform_happy_path_maps_botanist_and_selects_columns(mock_db, raw_df)
 
 
 def test_transform_raises_when_botanist_missing(monkeypatch, raw_df):
-    # Mock DB: lookup does not include "Alice"/"Bob"
+    # Mock DB
     monkeypatch.setattr(t, "get_sql_connection", lambda: DummyConn())
     monkeypatch.setattr(t, "fetch_botanist_lookup",
                         lambda conn: {"SomeoneElse": 1})
@@ -59,7 +59,7 @@ def test_transform_raises_when_botanist_missing(monkeypatch, raw_df):
 
     msg = str(excinfo.value)
     assert "Missing botanist IDs for:" in msg
-    # Should mention at least one missing botanist; order not guaranteed
+    # Should mention at least one missing botanist
     assert "Alice" in msg or "Bob" in msg
 
 
@@ -103,7 +103,6 @@ def test_transform_filters_out_of_range_values(mock_db):
 
     out = t.transform_readings(df)
 
-    # boundaries are inclusive because .between default is inclusive="both"
     assert out["plant_id"].tolist() == [1, 2]
 
 
@@ -111,7 +110,7 @@ def test_transform_enforces_int64_dtypes(mock_db):
     df = pd.DataFrame(
         [
             {
-                "plant_id": 7,  # already int-like
+                "plant_id": 7,
                 "botanist_name": "Bob",
                 "recording_taken": "2025-01-01",
                 "soil_moisture": "10",
@@ -152,5 +151,4 @@ def test_transform_does_not_mutate_input_df(mock_db, raw_df):
     raw_before = raw_df.copy(deep=True)
     _ = t.transform_readings(raw_df)
 
-    # The function does df.copy(), so input should remain unchanged
     pd.testing.assert_frame_equal(raw_df, raw_before)
